@@ -1,4 +1,4 @@
-class Respond {
+export default class Respond {
   public data: any;
   public message: string;
   public code: number;
@@ -8,4 +8,3 @@ class Respond {
     this.code = code;
   }
 }
-export default Respond;
