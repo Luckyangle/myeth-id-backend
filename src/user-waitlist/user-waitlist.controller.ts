@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import Respond from '../Respond';
+import Respond from '../respond';
 import UserWaitlist from './user-waitlist.entity';
 import UserWaitlistService from './user-waitlist.service';
 
