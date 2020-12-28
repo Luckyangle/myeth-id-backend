@@ -12,6 +12,9 @@ class UserWaitlistService {
   async getUsers(): Promise<UserWaitlist[]> {
     return await this.UserWaitlistRepository.find();
   }
+  async getUserNum(): Promise<number> {
+    return await this.UserWaitlistRepository.count();
+  }
   async getUser(id: number): Promise<UserWaitlist[]> {
     return await this.UserWaitlistRepository.find({
       select: ['address', 'twitter'],

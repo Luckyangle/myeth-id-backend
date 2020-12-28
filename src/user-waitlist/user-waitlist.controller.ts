@@ -12,9 +12,10 @@ class UserWaitlistController {
     return new Respond(users, 'success', 200);
   }
   @Post()
-  create(@Body() user: UserWaitlist) {
+  async create(@Body() user: UserWaitlist) {
     this.service.saveUser(user);
-    return new Respond(null, 'success', 200);
+    const num = await this.service.getUserNum();
+    return new Respond({ waitListNum: num }, 'success', 200);
   }
 }
 export default UserWaitlistController;
