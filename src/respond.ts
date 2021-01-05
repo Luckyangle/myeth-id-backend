@@ -1,4 +1,4 @@
-export default class Respond {
+class Respond {
   public data: any;
   public statusCode: number;
   constructor(data: any, statusCode: number) {
@@ -6,3 +6,4 @@ export default class Respond {
     this.statusCode = statusCode;
   }
 }
+export default Respond;
