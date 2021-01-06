@@ -18,33 +18,17 @@ class UsersController {
   constructor(private service: UsersService) {}
   /**
    * Creat user in waitlist and return num of waitlist
-   * @param {string} address
    * @param {User} vo
    */
   @Post()
   async createOne(@Body() vo: User) {
     try {
-      const token = new Token(
-        Daofi.Network,
-        Daofi.Address,
-        Daofi.Abi,
-        Daofi.Precision,
-      );
-      const balance = await token.queryBalance(vo.address);
-      if (balance >= Daofi.MinToken) {
-        const user = new User();
-        user.address = vo.address;
-        user.twitter = vo.twitter;
-        await this.service.saveUser(user);
-        const users = await this.service.getUsersBystatus(UserStatus.WAIT);
-        return new Respond({ waitListNum: users.length }, HttpStatus.OK, 'ok');
-      } else {
-        return new Respond(
-          null,
-          HttpStatus.UNAUTHORIZED,
-          'You dont have enough token and unauthorized',
-        );
-      }
+      const user = new User();
+      user.address = vo.address;
+      user.twitter = vo.twitter;
+      await this.service.saveUser(user);
+      const users = await this.service.getUsersBystatus(UserStatus.WAIT);
+      return new Respond({ waitListNum: users.length }, HttpStatus.OK, 'ok');
     } catch (error) {
       return new Respond(
         null,
@@ -59,7 +43,7 @@ class UsersController {
    * @param {User} vo
    */
   @Get(':id')
-  async findOne(@Param('address') address: string, @Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
       const token = new Token(
         Daofi.Network,

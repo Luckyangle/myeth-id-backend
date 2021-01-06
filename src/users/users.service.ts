@@ -27,7 +27,7 @@ class UsersService {
       where: [{ status: status }],
     });
   }
-  
+
   /**
    * Get user by ID
    * @param {number} id
