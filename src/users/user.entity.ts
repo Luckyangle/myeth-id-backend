@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Generated } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export enum UserStatus {
   WAIT = 'waitlist',
   WHITE = 'whitelist',
@@ -8,7 +8,7 @@ class User {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   myeth_id: string;
 
   @Column({ type: 'varchar', length: 64 })
