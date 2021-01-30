@@ -1,8 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+
 export enum UserStatus {
   WAIT = 'waitlist',
   WHITE = 'whitelist',
 }
+
 @Entity()
 class User {
   @PrimaryGeneratedColumn()
@@ -15,7 +17,10 @@ class User {
   address: string;
 
   @Column({ type: 'varchar', length: 32, nullable: true })
-  name: string;
+  firstName: string;
+
+  @Column({ type: 'varchar', length: 32, nullable: true })
+  lastName: string;
 
   @Column({ type: 'varchar', length: 64, nullable: true })
   pic: string;

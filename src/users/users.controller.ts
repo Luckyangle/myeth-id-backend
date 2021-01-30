@@ -72,6 +72,23 @@ class UsersController {
   }
 
   /**
+   * Find user
+   */
+  @Get()
+  async findAll() {
+    try {
+      const users = await this.service.getUsers();
+      return new Respond(users, HttpStatus.OK, 'ok');
+    } catch (error) {
+      return new Respond(
+        null,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        'Inernal server error',
+      );
+    }
+  }
+
+  /**
    * Update user
    * @param {User} vo
    */
@@ -88,7 +105,8 @@ class UsersController {
         const user = new User();
         user.myeth_id = vo.myeth_id;
         user.address = vo.address;
-        user.name = vo.name;
+        user.firstName = vo.firstName;
+        user.lastName = vo.lastName;
         user.pic = vo.pic;
         user.telegram = vo.telegram;
         user.twitter = vo.twitter;
