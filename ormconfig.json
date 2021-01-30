@@ -1,6 +1,6 @@
 {
     "type": "mysql",
-    "host": "localhost",
+    "host": "113.31.117.191",
     "port": 3306,
     "username": "daofi",
     "password": "myeth123.",
