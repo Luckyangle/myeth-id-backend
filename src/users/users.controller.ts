@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Query,
   Post,
 } from '@nestjs/common';
 import Token from 'src/token';
@@ -12,6 +13,7 @@ import { Daofi } from 'src/token.config';
 import Respond from '../respond';
 import User, { UserStatus } from './user.entity';
 import UsersService from './users.service';
+// import UsersService from '../../dist/users/users.service';
 
 @Controller('users')
 class UsersController {
@@ -92,6 +94,7 @@ class UsersController {
    * Update user
    * @param {User} vo
    */
+  @Post("updateUserBody")
   async updateOne(@Body() vo: User) {
     try {
       const token = new Token(
@@ -101,18 +104,17 @@ class UsersController {
         Daofi.Precision,
       );
       const balance = await token.queryBalance(vo.address);
+      const user = await this.service.getUserByMyethID(vo.myeth_id);
       if (balance >= Daofi.MinToken) {
-        const user = new User();
-        user.myeth_id = vo.myeth_id;
-        user.address = vo.address;
-        user.firstName = vo.firstName;
-        user.lastName = vo.lastName;
-        user.pic = vo.pic;
-        user.telegram = vo.telegram;
-        user.twitter = vo.twitter;
-        user.background = vo.background;
-        user.color = vo.color;
-        user.status = vo.status;
+        user.address = user.address == vo.address ? user.address : vo.address;
+        user.firstName = user.firstName == vo.firstName ? user.firstName : vo.firstName;
+        user.lastName = user.lastName == vo.lastName ? user.lastName : vo.lastName;
+        user.pic = user.pic == vo.pic ? user.pic : vo.pic;
+        user.telegram = user.telegram == vo.telegram ? user.telegram : vo.telegram;
+        user.twitter = user.twitter == vo.twitter ? user.twitter : vo.twitter;
+        user.background = user.background == vo.background ? user.background : vo.background;
+        user.color = user.color == vo.color ? user.color : vo.color;
+        user.status = user.status == vo.status ? user.status : vo.status;
         await this.service.updateUser(user);
         return new Respond(null, HttpStatus.OK, 'ok');
       } else {
@@ -126,5 +128,40 @@ class UsersController {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  @Post('updatePic')
+  async updatePic(@Query("myethId") myethId: string, @Query("picBase") pic: string){
+    try{
+      const token = new Token(
+        Daofi.Network,
+        Daofi.Address,
+        Daofi.Abi,
+        Daofi.Precision,
+      );
+      //getUserbyId
+      const user = await this.service.getUserByMyethID(myethId);
+      const balance = await token.queryBalance(user.address);
+      if(balance >= Daofi.MinToken){
+        user.pic = pic;
+        await this.service.updateUser(user);
+        return new Respond(null, HttpStatus.OK, 'ok');
+      }else{
+        return new Respond(
+          null,
+          HttpStatus.UNAUTHORIZED,
+          'You dont have enough token and unauthorized',
+        );
+      }
+    }catch(error){
+      console.log(error)
+      return new Respond(
+        null,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        'Inernal server error',
+      );
+    }
+  }
+
+
 }
 export default UsersController;

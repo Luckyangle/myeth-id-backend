@@ -62,7 +62,8 @@ class UsersService {
    * @param {User} user
    */
   async updateUser(user: User) {
-    this.usersRepository.update(user.id, user);
+    var userId = {"id":user.id, "myeth_id":user.myeth_id};
+    this.usersRepository.update(userId, user);
   }
 
   /**
